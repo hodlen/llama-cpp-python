@@ -16,7 +16,7 @@ if (LLAMA_BUILD)
         set(LLAMA_FMA "Off" CACHE BOOL "llama: enable FMA" FORCE)
         set(LLAMA_F16C "Off" CACHE BOOL "llama: enable F16C" FORCE)
     endif()
-    add_subdirectory(vendor/llama.cpp)
+    add_subdirectory(vendor/PowerInfer)
     install(
         TARGETS llama 
         LIBRARY DESTINATION ${SKBUILD_PLATLIB_DIR}/llama_cpp
@@ -44,28 +44,28 @@ if (LLAMA_BUILD)
         DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/llama_cpp
     )
 
-    # Building llava
-    add_subdirectory(vendor/llama.cpp/examples/llava)
-    set_target_properties(llava_shared PROPERTIES OUTPUT_NAME "llava")
-    # Set CUDA_ARCHITECTURES to OFF on windows
-    if (WIN32)
-        set_target_properties(llava_shared PROPERTIES CUDA_ARCHITECTURES OFF)
-    endif()
-    install(
-        TARGETS llava_shared
-        LIBRARY DESTINATION ${SKBUILD_PLATLIB_DIR}/llama_cpp
-        RUNTIME DESTINATION ${SKBUILD_PLATLIB_DIR}/llama_cpp
-        ARCHIVE DESTINATION ${SKBUILD_PLATLIB_DIR}/llama_cpp
-        FRAMEWORK DESTINATION ${SKBUILD_PLATLIB_DIR}/llama_cpp
-        RESOURCE DESTINATION ${SKBUILD_PLATLIB_DIR}/llama_cpp
-    )
-    # Temporary fix for https://github.com/scikit-build/scikit-build-core/issues/374
-    install(
-        TARGETS llava_shared
-        LIBRARY DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/llama_cpp
-        RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/llama_cpp
-        ARCHIVE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/llama_cpp
-        FRAMEWORK DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/llama_cpp
-        RESOURCE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/llama_cpp
-    )
+    # # Building llava
+    # add_subdirectory(vendor/llama.cpp/examples/llava)
+    # set_target_properties(llava_shared PROPERTIES OUTPUT_NAME "llava")
+    # # Set CUDA_ARCHITECTURES to OFF on windows
+    # if (WIN32)
+    #     set_target_properties(llava_shared PROPERTIES CUDA_ARCHITECTURES OFF)
+    # endif()
+    # install(
+    #     TARGETS llava_shared
+    #     LIBRARY DESTINATION ${SKBUILD_PLATLIB_DIR}/llama_cpp
+    #     RUNTIME DESTINATION ${SKBUILD_PLATLIB_DIR}/llama_cpp
+    #     ARCHIVE DESTINATION ${SKBUILD_PLATLIB_DIR}/llama_cpp
+    #     FRAMEWORK DESTINATION ${SKBUILD_PLATLIB_DIR}/llama_cpp
+    #     RESOURCE DESTINATION ${SKBUILD_PLATLIB_DIR}/llama_cpp
+    # )
+    # # Temporary fix for https://github.com/scikit-build/scikit-build-core/issues/374
+    # install(
+    #     TARGETS llava_shared
+    #     LIBRARY DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/llama_cpp
+    #     RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/llama_cpp
+    #     ARCHIVE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/llama_cpp
+    #     FRAMEWORK DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/llama_cpp
+    #     RESOURCE DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/llama_cpp
+    # )
 endif()

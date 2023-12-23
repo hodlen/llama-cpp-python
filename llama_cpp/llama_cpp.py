@@ -305,12 +305,15 @@ class llama_model_params(Structure):
     _fields_ = [
         ("n_gpu_layers", c_int32),
         ("main_gpu", c_int32),
+        ("vram_budget_gb", c_float),
         ("tensor_split", c_float_p),
         ("progress_callback", llama_progress_callback),
         ("progress_callback_user_data", c_void_p),
         ("vocab_only", c_bool),
         ("use_mmap", c_bool),
         ("use_mlock", c_bool),
+        ("reset_gpu_index", c_bool),
+        ("disable_gpu_index", c_bool),
     ]
 
 

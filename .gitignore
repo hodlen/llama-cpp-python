@@ -176,3 +176,5 @@ cython_debug/
 
 # downloaded model .bin files
 docker/open_llama/*.bin
+
+/.venv/**
