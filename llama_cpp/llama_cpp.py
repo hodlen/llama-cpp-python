@@ -305,15 +305,12 @@ class llama_model_params(Structure):
     _fields_ = [
         ("n_gpu_layers", c_int32),
         ("main_gpu", c_int32),
-        ("vram_budget_gb", c_float),
         ("tensor_split", c_float_p),
         ("progress_callback", llama_progress_callback),
         ("progress_callback_user_data", c_void_p),
         ("vocab_only", c_bool),
         ("use_mmap", c_bool),
         ("use_mlock", c_bool),
-        ("reset_gpu_index", c_bool),
-        ("disable_gpu_index", c_bool),
     ]
 
 
@@ -553,6 +550,21 @@ def llama_new_context_with_model(
 
 _lib.llama_new_context_with_model.argtypes = [llama_model_p, llama_context_params]
 _lib.llama_new_context_with_model.restype = llama_context_p
+
+
+def llama_model_apply_mlp_from_file(
+    model: llama_model_p, path: bytes, use_mmap: Union[c_bool, bool]
+):
+    _lib.llama_model_apply_mlp_from_file(model, path, use_mmap)
+
+_lib.llama_model_apply_mlp_from_file.argtypes = [llama_model_p, c_char_p, c_bool]
+_lib.llama_model_apply_mlp_from_file.restype = None
+
+def llama_model_apply_augmentation(model: llama_model_p):
+    _lib.llama_model_apply_augmentation(model)
+
+_lib.llama_model_apply_augmentation.argtypes = [llama_model_p]
+_lib.llama_model_apply_augmentation.restype = None
 
 
 # // Frees all allocated memory

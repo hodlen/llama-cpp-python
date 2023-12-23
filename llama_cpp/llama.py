@@ -221,6 +221,7 @@ class _LlamaModel:
         path_model: str,
         params: llama_cpp.llama_model_params,
         verbose: bool = True,
+        path_idx: Optional[str] = None,
     ):
         self.path_model = path_model
         self.params = params
@@ -235,6 +236,11 @@ class _LlamaModel:
             self.model = llama_cpp.llama_load_model_from_file(
                 self.path_model.encode("utf-8"), self.params
             )
+            if path_idx:
+                llama_cpp.llama_model_apply_mlp_from_file(
+                     self.model, path_idx.encode("utf-8"), True
+                )
+            llama_cpp.llama_model_apply_augmentation(self.model)
 
     def __del__(self):
         with suppress_stdout_stderr(disable=self.verbose):
@@ -761,6 +767,8 @@ class Llama:
         chat_handler: Optional[llama_chat_format.LlamaChatCompletionHandler] = None,
         # Misc
         verbose: bool = True,
+        # GPU index
+        path_idx: Optional[str] = None,
         # Extra Params
         **kwargs,  # type: ignore
     ):
@@ -887,7 +895,8 @@ class Llama:
             raise ValueError(f"Model path does not exist: {model_path}")
 
         self._model = _LlamaModel(
-            path_model=self.model_path, params=self.model_params, verbose=self.verbose
+            path_model=self.model_path, params=self.model_params, verbose=self.verbose,
+            path_idx=path_idx,
         )
 
         self._ctx = _LlamaContext(
